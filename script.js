@@ -208,21 +208,50 @@ class GameDesigner {
             return;
         }
         
-        gallery.innerHTML = designs.map(design => `
-            <div class="design-card">
-                <img src="${design.thumbnail}" alt="${design.name}">
-                <h3>${design.name}</h3>
-                <div class="meta">
-                    <span>Genre: ${design.genre}</span><br>
-                    <span>Elements: ${design.elements.length}</span><br>
-                    <span>Created: ${new Date(design.timestamp).toLocaleDateString()}</span>
-                </div>
-                <div class="actions">
-                    <button class="btn btn-primary" onclick="gameDesigner.loadDesign(${design.id})">Load</button>
-                    <button class="btn btn-secondary" onclick="gameDesigner.deleteDesign(${design.id})">Delete</button>
-                </div>
-            </div>
-        `).join('');
+        gallery.innerHTML = '';
+        
+        designs.forEach(design => {
+            const card = document.createElement('div');
+            card.className = 'design-card';
+            
+            const img = document.createElement('img');
+            img.src = design.thumbnail;
+            img.alt = this.escapeHtml(design.name);
+            
+            const title = document.createElement('h3');
+            title.textContent = design.name;
+            
+            const meta = document.createElement('div');
+            meta.className = 'meta';
+            meta.innerHTML = `
+                <span>Genre: ${this.escapeHtml(design.genre)}</span><br>
+                <span>Elements: ${design.elements.length}</span><br>
+                <span>Created: ${new Date(design.timestamp).toLocaleDateString()}</span>
+            `;
+            
+            const actions = document.createElement('div');
+            actions.className = 'actions';
+            
+            const loadBtn = document.createElement('button');
+            loadBtn.className = 'btn btn-primary';
+            loadBtn.textContent = 'Load';
+            loadBtn.addEventListener('click', () => this.loadDesign(design.id));
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn btn-secondary';
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.addEventListener('click', () => this.deleteDesign(design.id));
+            
+            actions.appendChild(loadBtn);
+            actions.appendChild(deleteBtn);
+            
+            card.appendChild(img);
+            card.appendChild(title);
+            card.appendChild(meta);
+            card.appendChild(actions);
+            
+            gallery.appendChild(card);
+        });
     }
     
     loadDesign(id) {
@@ -304,6 +333,12 @@ class GameDesigner {
     
     updateElementCount() {
         document.getElementById('elementCount').textContent = this.gameElements.length;
+    }
+    
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     }
     
     showNotification(message, type = 'info') {
