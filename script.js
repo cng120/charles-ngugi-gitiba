@@ -51,18 +51,35 @@ newsletterForm.addEventListener('submit', (e) => {
     const emailInput = newsletterForm.querySelector('input[type="email"]');
     const email = emailInput.value;
     
-    // Show success message
-    alert(`Thank you for subscribing! We'll send updates to ${email}`);
+    // Show success message (in production, this would submit to a backend)
+    const submitButton = newsletterForm.querySelector('button');
+    const originalText = submitButton.textContent;
+    submitButton.textContent = '✓ Subscribed!';
+    submitButton.style.backgroundColor = '#10b981';
     emailInput.value = '';
+    
+    setTimeout(() => {
+        submitButton.textContent = originalText;
+        submitButton.style.backgroundColor = '';
+    }, 3000);
 });
 
 // Game card button interactions
 const gameButtons = document.querySelectorAll('.game-card .btn-secondary');
 gameButtons.forEach(button => {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', (e) => {
         const gameCard = button.closest('.game-card');
         const gameName = gameCard.querySelector('h3').textContent;
-        alert(`You clicked to view details for: ${gameName}\n\nThis would normally take you to a detailed game page.`);
+        // Visual feedback
+        button.textContent = 'Loading...';
+        button.disabled = true;
+        
+        // Simulate navigation (in production, this would navigate to game details page)
+        setTimeout(() => {
+            console.log(`Viewing details for: ${gameName}`);
+            button.textContent = 'View Details';
+            button.disabled = false;
+        }, 1000);
     });
 });
 
@@ -85,7 +102,15 @@ const genreCards = document.querySelectorAll('.genre-card');
 genreCards.forEach(card => {
     card.addEventListener('click', () => {
         const genreName = card.querySelector('h3').textContent;
-        alert(`Browsing ${genreName} games...\n\nThis would filter games by the selected genre.`);
+        // Visual feedback
+        genreCards.forEach(c => c.style.opacity = '0.5');
+        card.style.opacity = '1';
+        
+        // Simulate filtering (in production, this would filter games by genre)
+        console.log(`Browsing ${genreName} games...`);
+        setTimeout(() => {
+            genreCards.forEach(c => c.style.opacity = '1');
+        }, 1500);
     });
 });
 
@@ -115,32 +140,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Add active state to navigation based on scroll position
+// Combined scroll handler for better performance
+let ticking = false;
 window.addEventListener('scroll', () => {
-    const sections = document.querySelectorAll('section[id]');
-    const scrollY = window.pageYOffset;
+    if (!ticking) {
+        window.requestAnimationFrame(() => {
+            // Add active state to navigation based on scroll position
+            const sections = document.querySelectorAll('section[id]');
+            const scrollY = window.pageYOffset;
 
-    sections.forEach(section => {
-        const sectionHeight = section.offsetHeight;
-        const sectionTop = section.offsetTop - 100;
-        const sectionId = section.getAttribute('id');
-        const navLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
+            sections.forEach(section => {
+                const sectionHeight = section.offsetHeight;
+                const sectionTop = section.offsetTop - 100;
+                const sectionId = section.getAttribute('id');
+                const navLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
 
-        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-            navLinks.forEach(link => link.classList.remove('active'));
-            if (navLink) {
-                navLink.classList.add('active');
+                if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    if (navLink) {
+                        navLink.classList.add('active');
+                    }
+                }
+            });
+
+            // Add parallax effect to hero section
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.backgroundPositionY = scrollY * 0.5 + 'px';
             }
-        }
-    });
-});
-
-// Add parallax effect to hero section
-window.addEventListener('scroll', () => {
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        const scrollPosition = window.pageYOffset;
-        hero.style.backgroundPositionY = scrollPosition * 0.5 + 'px';
+            
+            ticking = false;
+        });
+        ticking = true;
     }
 });
 
