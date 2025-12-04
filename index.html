@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Design Studio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <h1 class="logo">🎮 Game Design Studio</h1>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#designer">Designer</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="container">
+                <h2 class="hero-title">Create Amazing Games</h2>
+                <p class="hero-subtitle">Design, prototype, and visualize your game ideas with our interactive tools</p>
+                <a href="#designer" class="cta-button">Start Designing</a>
+            </div>
+        </section>
+
+        <!-- Game Designer Section -->
+        <section id="designer" class="designer-section">
+            <div class="container">
+                <h2>Game Designer Tool</h2>
+                <div class="designer-layout">
+                    <!-- Control Panel -->
+                    <div class="control-panel">
+                        <h3>Design Controls</h3>
+                        
+                        <div class="control-group">
+                            <label for="gameName">Game Name:</label>
+                            <input type="text" id="gameName" placeholder="Enter game name">
+                        </div>
+
+                        <div class="control-group">
+                            <label for="gameGenre">Genre:</label>
+                            <select id="gameGenre">
+                                <option value="action">Action</option>
+                                <option value="adventure">Adventure</option>
+                                <option value="rpg">RPG</option>
+                                <option value="puzzle">Puzzle</option>
+                                <option value="strategy">Strategy</option>
+                                <option value="sports">Sports</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label>Game Elements:</label>
+                            <div class="element-buttons">
+                                <button class="element-btn" data-element="player" title="Add Player">👤 Player</button>
+                                <button class="element-btn" data-element="enemy" title="Add Enemy">👾 Enemy</button>
+                                <button class="element-btn" data-element="coin" title="Add Coin">💰 Coin</button>
+                                <button class="element-btn" data-element="obstacle" title="Add Obstacle">🧱 Obstacle</button>
+                                <button class="element-btn" data-element="powerup" title="Add Power-up">⭐ Power-up</button>
+                                <button class="element-btn" data-element="goal" title="Add Goal">🏁 Goal</button>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="backgroundColor">Background Color:</label>
+                            <input type="color" id="backgroundColor" value="#1a1a2e">
+                        </div>
+
+                        <div class="control-group">
+                            <label for="gridSize">Grid Size:</label>
+                            <input type="range" id="gridSize" min="20" max="100" value="50">
+                            <span id="gridSizeValue">50</span>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button id="clearCanvas" class="btn btn-secondary">Clear Canvas</button>
+                            <button id="saveDesign" class="btn btn-primary">Save Design</button>
+                            <button id="exportDesign" class="btn btn-success">Export</button>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Area -->
+                    <div class="canvas-container">
+                        <div class="canvas-info">
+                            <span>Canvas: <span id="canvasSize">800x600</span></span>
+                            <span>Elements: <span id="elementCount">0</span></span>
+                        </div>
+                        <canvas id="gameCanvas" width="800" height="600"></canvas>
+                        <div class="canvas-instructions">
+                            <p>💡 Click on element buttons, then click on the canvas to place them</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="gallery-section">
+            <div class="container">
+                <h2>Saved Designs</h2>
+                <div id="designGallery" class="design-gallery">
+                    <p class="empty-message">No saved designs yet. Start creating!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section">
+            <div class="container">
+                <h2>About Game Design Studio</h2>
+                <div class="about-content">
+                    <div class="about-card">
+                        <h3>🎨 Visual Design</h3>
+                        <p>Create and visualize game layouts with our intuitive drag-and-drop interface</p>
+                    </div>
+                    <div class="about-card">
+                        <h3>🛠️ Design Tools</h3>
+                        <p>Access a variety of game elements and customization options to bring your ideas to life</p>
+                    </div>
+                    <div class="about-card">
+                        <h3>💾 Save & Export</h3>
+                        <p>Save your designs locally and export them for further development</p>
+                    </div>
+                    <div class="about-card">
+                        <h3>🚀 Quick Prototyping</h3>
+                        <p>Rapidly prototype game concepts and iterate on your designs</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Game Design Studio. Create amazing games!</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
