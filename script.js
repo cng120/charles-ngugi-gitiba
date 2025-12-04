@@ -318,14 +318,14 @@ class GameDesigner {
         const url = URL.createObjectURL(dataBlob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `${gameName.replace(/\s+/g, '-').toLowerCase()}-design.json`;
+        link.download = `${this.sanitizeFilename(gameName)}-design.json`;
         link.click();
         
         // Also export canvas as image
         const imageUrl = this.canvas.toDataURL('image/png');
         const imageLink = document.createElement('a');
         imageLink.href = imageUrl;
-        imageLink.download = `${gameName.replace(/\s+/g, '-').toLowerCase()}-preview.png`;
+        imageLink.download = `${this.sanitizeFilename(gameName)}-preview.png`;
         imageLink.click();
         
         this.showNotification('Design exported successfully!', 'success');
@@ -341,16 +341,36 @@ class GameDesigner {
         return div.innerHTML;
     }
     
+    sanitizeFilename(filename) {
+        // Remove any path traversal attempts and special characters
+        return filename
+            .replace(/[^a-zA-Z0-9\s-]/g, '') // Only allow alphanumeric, spaces, and hyphens
+            .replace(/\s+/g, '-') // Replace spaces with hyphens
+            .toLowerCase()
+            .slice(0, 100); // Limit length to 100 characters
+    }
+    
     showNotification(message, type = 'info') {
+        // Validate notification type
+        const validTypes = ['info', 'success', 'warning'];
+        const safeType = validTypes.includes(type) ? type : 'info';
+        
+        // Map types to colors
+        const colors = {
+            success: '#00b894',
+            warning: '#fdcb6e',
+            info: '#6c5ce7'
+        };
+        
         // Create notification element
         const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
+        notification.className = `notification notification-${safeType}`;
         notification.textContent = message;
         notification.style.cssText = `
             position: fixed;
             top: 80px;
             right: 20px;
-            background: ${type === 'success' ? '#00b894' : type === 'warning' ? '#fdcb6e' : '#6c5ce7'};
+            background: ${colors[safeType]};
             color: white;
             padding: 15px 25px;
             border-radius: 8px;
